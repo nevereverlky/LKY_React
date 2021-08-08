@@ -12,7 +12,7 @@ class Login extends React.Component {
 
   //提交表单且数据验证成功后回调事件
   onFinish = async(values) => {
-    //console.log('提交登录的ajax请求: ', values);//得到输入的表单数据
+    console.log('提交登录的ajax请求: ', values);//得到输入的表单数据
     //请求登录
     const {username, password} = values
     const result = await reqLogin(username,password)
