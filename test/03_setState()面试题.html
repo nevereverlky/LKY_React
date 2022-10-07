@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>03_setState()面试题</title>
+</head>
+<body>
+
+<div id="example"></div>
+
+<script type="text/javascript" src="./js/react.development.js"></script>
+<script type="text/javascript" src="./js/react-dom.development.js"></script>
+<script type="text/javascript" src="./js/babel.min.js"></script>
+
+<script type="text/babel">
+  class StateTest extends React.Component {
+
+    state = {
+      count: 0,
+    }
+
+    componentDidMount() {
+      // 第一个打印 ==>render 0
+      this.setState({count: this.state.count + 1})//1
+      this.setState({count: this.state.count + 1})//1
+      console.log(this.state.count) // 第二个打印 ==> 0
+
+      this.setState(state => ({count: state.count + 1}))//2
+      this.setState(state => ({count: state.count + 1}))//3
+      console.log(this.state.count) // 第三个打印 ==> 0
+      //第四个打印 ==>render 3
+
+      setTimeout(() => {
+        this.setState({count: this.state.count + 1})//第九个打印 ==>render 6
+        console.log('timeout', this.state.count) // 第十个打印 ==>timeout6
+
+        this.setState({count: this.state.count + 1})//第十一个打印 ==>render 7
+        console.log('timeout', this.state.count) // 第十二个打印 ==>timeout7
+      }, 0)
+
+      Promise.resolve().then(value => {
+        this.setState({count: this.state.count + 1})//第五个打印 ==>render 4
+        console.log('promise', this.state.count)  // 第六个打印 ==>promise 4
+
+        this.setState({count: this.state.count + 1})//第七个打印 ==>render 5
+        console.log('promise', this.state.count) // 第八个打印 ==> promise 5
+      })
+    }
+
+    render() {
+      const count = this.state.count
+      console.log('render', count)
+      return (
+        <div>
+          <p>{count}</p>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<StateTest/>, document.getElementById('example'))
+
+</script>
+</body>
+</html>
+
