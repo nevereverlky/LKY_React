@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Form, Input, Icon, Cascader, Upload, Button, message } from 'antd'
+import { Card, Form, Input, Icon, Cascader, Button, message } from 'antd'
 import PicturesWall from './pictures-wall'
 import RichTextEditor from './rich-text-editor'
 import LinkButton from '../../components/link-button'
@@ -32,7 +32,7 @@ class ProductAddUpdate extends React.Component {
 
     //如果是一个二级分类商品的更新
     const {isUpdate, product} = this
-    const {pCategoryId, categoryId} = product
+    const {pCategoryId} = product
     if(isUpdate && pCategoryId !== '0') {
       //获取对应的二级分类列表
       const subCategorys = await this.getCategorys(pCategoryId);
