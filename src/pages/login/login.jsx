@@ -8,6 +8,10 @@ import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 import { Redirect } from 'react-router-dom';
 
+//const Item = Form.Item;
+/*
+登录的路由组件
+ */
 class Login extends React.Component {
 
   //提交表单且数据验证成功后回调事件
@@ -41,7 +45,6 @@ class Login extends React.Component {
     if (user && user._id){
       return <Redirect to="/"/>
     }
-
 
     return (
       <div className="login">

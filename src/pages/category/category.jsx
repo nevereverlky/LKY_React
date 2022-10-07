@@ -247,18 +247,20 @@ class Category extends React.Component {
             />
           </Modal> : null
         }
-        {showStatus === 2 ? <Modal
-          title="更新分类"
-          visible={showStatus === 2}
-          onOk={this.updateCategory}
-          onCancel={this.handleCancel}
-          destroyOnClose={true}
-        >
-          <UpdateForm
-            categoryName={category.name}
-            setForm={form => this.form = form}
-          />
-        </Modal> : null}
+        {
+          showStatus === 2 ? <Modal
+            title="更新分类"
+            visible={showStatus === 2}
+            onOk={this.updateCategory}
+            onCancel={this.handleCancel}
+            destroyOnClose={true}
+          >
+            <UpdateForm
+              categoryName={category.name}
+              setForm={form => this.form = form}
+            />
+          </Modal> : null
+        }
       </Card>
     );
   }

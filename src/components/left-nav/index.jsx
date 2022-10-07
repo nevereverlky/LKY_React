@@ -41,6 +41,7 @@ class LeftNav extends React.Component {
   }
 
   //方式二：使用reduce() + 递归调用
+  //reduce()不一定用在数字累加，也可以用在往一个数组或对象中，不断加入新的
   getMenuNodes = (menuList) => {
     //得到当前请求的路由路径
     const path = this.props.location.pathname
@@ -63,7 +64,7 @@ class LeftNav extends React.Component {
         ))
       } else {
         //查找一个与当前请求路径匹配的子Item
-        const cItem = item.children.find(cItem => cItem.key === path)
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0)
         //如果存在，说明当前item的子列表需要打开
         if(cItem) {
           this.openkey = item.key
@@ -85,15 +86,19 @@ class LeftNav extends React.Component {
   在第一次render()之前执行一次
   为第一个render()准备数据(必须同步的)
   */
+  //已废弃，现在用useEffect
   UNSAFE_componentWillMount () {
      this.menuNodes = this.getMenuNodes(menuList)
   }
 
   render(){
-    //得到当前请求的路由路径
-    const path = this.props.location.pathname
+    //需要withRouter该包装非路由组件，才能获取到location，从而得到当前请求的路由路径
+    let path = this.props.location.pathname
     console.log('render()', path)
-    //得到需要打开菜单项的key
+    if(path.indexOf('/product') === 0){ //当前请求的是商品或其子路由界面
+      path = '/product'
+    }
+    //得到需要展开菜单项的key
     const openkey = this.openkey
 
     return (
@@ -105,27 +110,10 @@ class LeftNav extends React.Component {
         <Menu
           mode="inline"
           theme="dark"
-          //defaultSelectedKeys初始选中的菜单项 key 数组;selectedKeys当前选中的菜单项 key 数组，更好用
+          //defaultSelectedKeys初始选中的菜单项 key 数组;selectedKeys当前需要展开的选中的菜单项 key 数组，更好用
           selectedKeys={[path]}
           defaultOpenKeys={[openkey]}
         >
-          {/* <Menu.Item key="/home" icon={<PieChartOutlined />}>
-            <Link to='/home'>
-            首页
-            </Link>
-          </Menu.Item>
-          <SubMenu key="sub1" icon={<MailOutlined />} title="商品">
-            <Menu.Item key="/category" icon={<AppstoreOutlined />}>
-              <Link to='/category'>
-              品类管理
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/product" icon={<AppstoreOutlined />}>
-              <Link to='/product'>
-              商品管理
-              </Link>
-            </Menu.Item>
-          </SubMenu> */}
           {
             this.menuNodes
           }
