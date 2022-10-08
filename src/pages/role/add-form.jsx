@@ -50,7 +50,7 @@ class AddForm extends React.Component {
       // </Form>
       <Form ref={this.formRef}>
         <Form.Item {...formItemLayout}>
-          <p>分类名称:</p>
+          <p>角色名称:</p>
           <Form.Item
             noStyle
             name="roleName"
