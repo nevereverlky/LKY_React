@@ -11,8 +11,8 @@ import User from '../user/user';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
 import Pie from '../charts/pie';
-
-import memoryUtils from '../../utils/memoryUtils';
+import { connect } from 'react-redux';
+// import memoryUtils from '../../utils/memoryUtils';
 
 const { Footer, Sider, Content } = Layout;
 
@@ -23,7 +23,8 @@ class Admin extends React.Component {
 
   render(){
     
-    const user = memoryUtils.user
+    // const user = memoryUtils.user
+    const user = this.props.user
     //如果内存中没有存储user，则说明当前没登录
     if (!user || !user._id) {
       //自动跳转到登录页面（在render()中）
@@ -57,4 +58,7 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin;
+export default connect(
+  state => ({user: state.user}),
+  {}
+)(Admin);

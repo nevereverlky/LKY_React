@@ -1,11 +1,13 @@
 import React from 'react'
 import './login.less'
 import logo from '../../assets/images/logo.png'
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {reqLogin} from '../../api/index'
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
+import { connect } from 'react-redux';
+import { login } from '../../redux/actions';
+// import {reqLogin} from '../../api/index'
+// import memoryUtils from '../../utils/memoryUtils';
+// import storageUtils from '../../utils/storageUtils';
 import { Redirect } from 'react-router-dom';
 
 //const Item = Form.Item;
@@ -19,17 +21,20 @@ class Login extends React.Component {
     console.log('提交登录的ajax请求: ', values);//得到输入的表单数据
     //请求登录
     const {username, password} = values
-    const result = await reqLogin(username,password)
-    if (result.status === 0) {
-      message.success('登录成功')
-      const user = result.data
-      memoryUtils.user = user//保存在内存中
-      storageUtils.saveUser(user)//保存到local中
-      //不需要再回退到登陆页面，则用replace，否则用push        
-      this.props.history.replace('/')
-    } else {
-      message.error(result.msg)
-    }
+    //调用分发异步action的函数 => 发登录的异步请求，有了结果后更新状态
+    this.props.login(username, password)
+
+    // const result = await reqLogin(username,password)
+    // if (result.status === 0) {
+    //   message.success('登录成功')
+    //   const user = result.data
+    //   memoryUtils.user = user//保存在内存中
+    //   storageUtils.saveUser(user)//保存到local中
+    //   //不需要再回退到登陆页面，则用replace，否则用push        
+    //   this.props.history.replace('/home')
+    // } else {
+    //   message.error(result.msg)
+    // }
 
     //reqLogin(username, password).then(response => {
     //   console.log(response.data)
@@ -41,10 +46,12 @@ class Login extends React.Component {
   render(){
 
     //如果用户已经登录，自动跳转到管理界面
-    const user = memoryUtils.user
+    // const user = memoryUtils.user
+    const user = this.props.user
     if (user && user._id){
-      return <Redirect to="/"/>
+      return <Redirect to="/home"/>
     }
+    const errorMsg = this.props.user.errorMsg
 
     return (
       <div className="login">
@@ -53,6 +60,7 @@ class Login extends React.Component {
           <h1>React项目：后台管理系统</h1>
         </header>
         <section className="login-content">
+        <div className={errorMsg ? 'error-msg show' : 'error-msg'}>{errorMsg}</div>
           <h2>用户登陆</h2>
           <Form
             name="normal_login"
@@ -131,4 +139,7 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default connect(
+  state => ({user: state.user}),
+  {login}
+)(Login);
