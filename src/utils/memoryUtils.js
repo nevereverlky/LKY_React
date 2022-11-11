@@ -4,5 +4,6 @@
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    user: {}//保存当前登录的user
+    user: {}, //保存当前登录的user
+    product: {} //保存指定的商品对象
 }
