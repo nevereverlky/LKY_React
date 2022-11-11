@@ -4,6 +4,7 @@ import {PlusOutlined} from '@ant-design/icons';
 import LinkButton from '../../components/link-button'
 import {reqProducts, reqSearchProducts, reqUpdateStatus} from '../../api'
 import {PAGE_SIZE} from '../../utils/constants'
+import memoryUtils from '../../utils/memoryUtils';
 
 //商品的默认子路由组件
 class ProductHome extends React.Component {
@@ -55,14 +56,30 @@ class ProductHome extends React.Component {
             <span>
               {/* 是路由组件，可以获取history */}
               {/* 将product对象使用state传递给目标路由组件 */}
-              <LinkButton onClick={() => this.props.history.push('/product/detail', {product})}>详情</LinkButton>
-              <LinkButton onClick={() => this.props.history.push('/product/addupdate', product)}>修改</LinkButton>
+              {/* <LinkButton onClick={() => this.props.history.push('/product/detail', {product})}>详情</LinkButton> */}
+              <LinkButton onClick={() => this.showDetail(product)}>详情</LinkButton>
+              {/* <LinkButton onClick={() => this.props.history.push('/product/addupdate', product)}>修改</LinkButton> */}
+              <LinkButton onClick={() => this.showUpdate(product)}>修改</LinkButton>
             </span>
           )
         }
       }
     ]
   }
+
+  //显示商品详情界面
+  showDetail = (product) => {
+    // 缓存product对象 => 给detail组件使用
+    memoryUtils.product = product
+    this.props.history.push('/product/detail')
+  } 
+
+  //显示修改商品界面
+  showUpdate = (product) => {
+    // 缓存product对象 => 给detail组件使用
+    memoryUtils.product = product
+    this.props.history.push('/product/addupdate')
+  } 
 
   //获取指定页码的列表数据显示
   getProducts = async (pageNum) => {

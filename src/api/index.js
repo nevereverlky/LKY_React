@@ -9,7 +9,7 @@
 import ajax from './ajax'
 
 // const BASE = 'http://localhost:5000'
-const BASE = ''
+const BASE = '/api'
 
 // 登陆
 // export function reqLogin(username,password) {

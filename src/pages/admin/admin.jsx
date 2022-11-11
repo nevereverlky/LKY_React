@@ -11,6 +11,7 @@ import User from '../user/user';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
 import Pie from '../charts/pie';
+import notFound from '../not-found/not-found';
 import { connect } from 'react-redux';
 // import memoryUtils from '../../utils/memoryUtils';
 
@@ -40,6 +41,7 @@ class Admin extends React.Component {
           <Header/>
           <Content style={{margin: 20, backgroundColor: '#fff'}}>
             <Switch>
+              <Redirect from='/' to='/home' exact/>
               <Route path='/home' component={Home}/>
               <Route path='/category' component={Category}/>
               <Route path='/product' component={Product}/>
@@ -48,7 +50,8 @@ class Admin extends React.Component {
               <Route path='/charts/bar' component={Bar}/>
               <Route path='/charts/line' component={Line}/>
               <Route path='/charts/pie' component={Pie}/>
-              <Redirect to='/home'/>
+              <Route component={notFound}/>{/**上面没有一个匹配的，直接显示 */}
+              {/* <Redirect to='/home'/> */}
             </Switch>
           </Content>
           <Footer style={{textAlign: 'center',color: '#cccccc'}}>推荐使用谷歌浏览器，可以获得更佳页面操作</Footer>
